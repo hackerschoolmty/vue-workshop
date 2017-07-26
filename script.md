@@ -1,9 +1,3 @@
-# Introducción a Vue.js
-Vue.js fue lanzado al público en 2014.02.01 (public release 0.8) y empezó como
-una librería para la vista (just a view layer library). A partir de la versión 
-2.0 es considerado un framework progresivo (Progressive Framework). Actualmente
-se encuentra en la versión 2.3.
-
 Para empezar a utilizar vue podemos generar un proyecto con vue-cli:
 
 ```bash
@@ -28,7 +22,7 @@ carpeta con el siguiente contenido:
 ```
 
 # v-for, v-if, v-on, axios, mounted
-Ahora empecemos instanciando Vue y generando un arreglo de objetos
+Utilizar directivas de Vue.js es muy sencillo. Empezaremos por las básicas.
 ## v-for
 ```html
 <!DOCTYPE html>
@@ -101,8 +95,12 @@ new Vue({
     }
   }
 })
+
 ```
 ## axios, mounted
+En esta sección veremos los ciclos de vida de una instancia de vue. Además de 
+consumir un servicio web remoto que llene el arreglo de categories.
+
 ```html
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <div id='categoriesApp'>
@@ -140,6 +138,9 @@ new Vue({
 ```
 
 # Componentes
+Existen diferentes formas de crear componentes. Empezaremos viendo la menos común
+y analizaremos el uso de slot para crear componentes altamente personalizables.
+
 ### Inline Templates
 ```html
 ...
@@ -167,6 +168,7 @@ Vue.component('category-item', {
   props: ['name', 'selected']
 })
 ```
+
 ### Template Tag
 ```html
 <div id='categoriesApp'>
@@ -196,6 +198,7 @@ Vue.component('category-item', {
 })
 ```
 ### Slot
+
 ```html
 <div id='categoriesApp'>
     <ul>
@@ -216,12 +219,14 @@ Vue.component('category-item', {
     </div>
   </template>
 ```
+
 ```javascript
 Vue.component('category-item', {
   template: '#categoryItemTmpl',
   props: ['name']
 })
 ```
+
 ### Componentes Dinamicos
 ```html
 <div id='categoriesApp'>
@@ -323,6 +328,7 @@ new Vue({
 ```
 
 # Mixins
+Los mixins se usan para reutilizar comportamiento y propiedades en componentes.
 
 ```javascript
 categoriesListMixin = {
@@ -346,6 +352,8 @@ Vue.component('categoriesTable', {
 ```
 
 # Comunicación entre componentes
+La forma más sencilla de comunicar componentes es mediante propiedades y eventos.
+
 ```html
 <component v-bind:is='currentView'
       v-bind:categories='categories'
@@ -399,13 +407,11 @@ new Vue({
   }
 })
 ```
-# Filters
-```javascript
-Vue.filter('replaceWithLove', function (value) {
-  return '<3'
-})
-```
+
 # Shorthands
+Podemos escribir menos codigo para ciertas directivas de vue. Reemplazamos v-bind 
+por ```:``` y v-on por ```@```
+
 ```html
 <div id='categoriesApp'>
   Mostrar Categorias en Tabla 
@@ -454,6 +460,15 @@ Vue.filter('replaceWithLove', function (value) {
 ```
 
 # Webpack Simple Template
+Acabamos de ver la forma más sencilla de utilizar Vue.js en cualquier proyecto 
+que es importando la librería en el ```<head>```. Sin embargo, cuando trabajamos
+con un sistema complejo o queremos hacer una ```Single Page App``` merece la pena
+utilizar herramientas que nos ayuden a modularizar nuestro código. La herramienta 
+que utilizaremos será webpack.
+
+El generador de vue-cli maneja un template simple de webpack. Trabajaremos con 
+este template el resto del día.
+
 ```bash
 $ vue init webpack-simple vue-store
 $ cd vue-store
@@ -467,7 +482,7 @@ $ mkdir src/filters
 $ npm run dev
 ```
 
-Hello world! Al primer componente!
+Ahora creamos el clásico Hello world! en un componente.
 
 ```html
 <!--src/App.vue-->
@@ -497,7 +512,8 @@ export default {
 </script>
 ```
 
-Creando componentes con category
+Ahora que entendemos la estructura. Utilizaremos el código que hicimos previamente.
+
 ```html
 <!--src/App.vue-->
 <template>
@@ -534,6 +550,7 @@ export default {
 }
 </script>
 ```
+
 ```html
 <!--src/components/CategoriesUi.vue-->
 <template>
@@ -556,6 +573,7 @@ export default {
   }
 </script>
 ```
+
 ```html
 <!--src/components/CategoryLi.vue-->
 <template>
@@ -570,11 +588,14 @@ export default {
   }
 </script>
 ```
-Instalamos axios
+
+### Instalamos axios
+Necesitamos instalar axios como paquete de npm para poder utilizarlo en conjunto 
+con los imports
+
 ```bash
 $ npm install axios
 ```
-Ahora Dejamos la logica de categories como estaba
 ```html
 <!--src/App.vue-->
 <template>
@@ -721,12 +742,17 @@ module.exports = {
   }
 </script>
 ```
+## Administrador de estado centralizado
+Ahora utilizaremos vuex para administrar el estado de nuestra aplicación. La estructura
+de vuex que veremos será la sencilla.
 
 # vuex
 ```bash
 $ npm install vuex
 ```
-Mas adelante necesitaremos
+Más adelante necesitaremos el siguiente plugin de babel así que lo instalaremos
+y configuraremos.
+
 ```bash
 $ npm install --save-dev babel-plugin-transform-object-rest-spread
 ```
@@ -791,28 +817,6 @@ export default new Vuex.Store({
 
 ```
 
-```javascript
-// src/mixins/CategoriesMixin
-const mapGetters = require('vuex').mapGetters
-const mapActions = require('vuex').mapActions
-
-module.exports = {
-  listMixin: {
-    computed: {
-      ...mapGetters({
-        categories: 'getAllCategories'
-      })
-    },
-    methods: {
-      ...mapActions(['fetchCategories', 'selectCategory'])
-    },
-    mounted() {
-      this.fetchCategories()
-    }
-  }
-}
-
-```
 
 ```javascript
 //main.js
@@ -834,6 +838,7 @@ $ npm install vue-router
   <router-view></router-view>
 </div>
 ```
+
 
 ```javascript
 // src/main.js
@@ -858,10 +863,6 @@ new Vue({
   router
 }).$mount('#app')
 ```
-## Pongamos Orden
-
-Seguramente muchos de ustedes se preguntaran: cuando vamos a poner la logica donde
-corresponde?
 
 ```javascript
 // main.js
@@ -910,275 +911,3 @@ export default {
 </script>
 ```
 
-```html
-<!-- src/components/CategoriesTable.vue-->
-<template>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Selected</th>
-    </thead>
-    <tbody>
-      <tr
-        @click='selectCategory(category)'
-        v-for='category in categories'>
-        <td>{{ category.name }}</td>
-        <td>{{ category.selected }}</td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-<script>
-  import { listMixin } from '../mixins/CategoriesMixin'
-  import { mapGetters, mapActions } from 'vuex'
-  
-  export default {
-    mixins: [listMixin],
-    computed: {
-      ...mapGetters({
-        categories: 'getAllCategories'
-      })
-    },
-    methods: {
-      ...mapActions(['fetchCategories'])
-    },
-    mounted() {
-      this.fetchCategories()
-    }
-  }
-</script>
-```
-
-```html
-<!-- src/components/CategoriesUl.vue-->
-<template>
-  <ul>
-    <li 
-      v-for='category in categories'
-      @click='selectCategory(category)'>
-      <category-li
-        :name='category.name'
-        :selected='category.selected'></category-li>
-    </li>
-  </ul>
-</template>
-<script >
-  import CategoryLi from './CategoryLi.vue'
-  import { listMixin } from '../mixins/CategoriesMixin'
-  import { mapGetters, mapActions } from 'vuex'
-
-  export default {
-    mixins: [listMixin],
-    computed: {
-      ...mapGetters({
-        categories: 'getAllCategories'
-      })
-    },
-    methods: {
-      ...mapActions(['fetchCategories'])
-    },
-    components: {
-      categoryLi: CategoryLi
-    }
-  }
-</script>
-```
-
-```
-<!-- src/mixins/CategoriesMixin.vue-->
-module.exports = { 
-  listMixin: {
-    methods: {
-      selectCategory: function (category) {
-        category.selected = !category.selected
-      }
-    },
-    mounted() {
-      this.fetchCategories()
-    }
-  }
-}
-```
-
-Refactor con Mixins
-
-```html
-<!-- src/components/CategoriesUl.vue -->
-<template>
-  <ul>
-    <li 
-      v-for='category in categories'
-      @click='selectCategory(category)'>
-      <category-li
-        :name='category.name'
-        :selected='category.selected'></category-li>
-    </li>
-  </ul>
-</template>
-<script >
-  import CategoryLi from './CategoryLi.vue'
-  import { listMixin } from '../mixins/CategoriesMixin'
-  import { mapGetters, mapActions } from 'vuex'
-
-  export default {
-    mixins: [listMixin],
-    components: {
-      categoryLi: CategoryLi
-    }
-  }
-</script>
-```
-
-```html
-<!-- src/components/CategoriesTable.vue -->
-<template>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Selected</th>
-    </thead>
-    <tbody>
-      <tr
-        @click='selectCategory(category)'
-        v-for='category in categories'>
-        <td>{{ category.name }}</td>
-        <td>{{ category.selected }}</td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-<script>
-  import { listMixin } from '../mixins/CategoriesMixin'
-  import { mapGetters, mapActions } from 'vuex'
-
-  export default {
-    mixins: [listMixin]
-  }
-</script>
-```
-
-```javascript
-// src/mixins/CategoriesMixins.js
-const mapGetters = require('vuex').mapGetters
-const mapActions = require('vuex').mapActions
-
-module.exports = { 
-  listMixin: {
-    methods: {
-      selectCategory: function (category) {
-        category.selected = !category.selected
-      }
-    },
-    computed: {
-      ...mapGetters({
-        categories: 'getAllCategories'
-      })
-    },
-    methods: {
-      ...mapActions(['fetchCategories'])
-    },
-    mounted() {
-      this.fetchCategories()
-    }
-  }
-}
-```
-# firebase
-```bash
-npm install firebase vuefire --save
-```
-
-```html
-<!--src/components/ProductList.vue-->
-<template>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Price</th>
-    </thead>
-    <tbody>
-      <tr
-        v-for='product in products'>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-<script> 
-  import Firebase from 'firebase'
-  import VueFire from 'vuefire'
-  import Vue from 'vue'
-  
-  Vue.use(VueFire)
-
-  let firebaseApp = Firebase.initializeApp({
-    apiKey: "AIzaSyBy1J69Uqpd_-Y7N6KSVwJWbvQXMxze3Vw",
-    authDomain: "products-fa37f.firebaseapp.com",
-    databaseURL: "https://products-fa37f.firebaseio.com",
-    projectId: "products-fa37f",
-    storageBucket: "",
-    messagingSenderId: "630701294122"
-  })
-
-  let db = firebaseApp.database()
-
-  export default {
-    firebase: {
-      products: db.ref('products_list')
-    }
-  }
-</script>
-```
-
-```javascript
-// src/main.js
-import Vue from 'vue'
-import App from './App.vue'
-import CategoriesTable from './components/CategoriesTable.vue'
-import CategoriesUl from './components/CategoriesUl.vue'
-import ProductsList from './components/ProductsList.vue'
-import VueRouter from 'vue-router'
-
-Vue.use(VueRouter)
-
-const routes = [
-  { path: '/', component: App },
-  { path: '/categories/table', component: CategoriesTable },
-  { path: '/categories/ul', component: CategoriesUl },
-  { path: '/products/table', component: ProductsList }
-]
-
-const router = new VueRouter({
-  routes
-})
-
-import store from './vuex/store'
-
-new Vue({
-  store,
-  router
-}).$mount('#app')
-
-```
-
-```html
-<!--src/App.vue-->
-<template>
-  <div >
-    <router-link to='/categories/ul'> Vista en UL 
-    </router-link>
-    <router-link to='/categories/table'> Vista en Table
-    </router-link>
-
-    <router-link to='/products/table'> Products
-    </router-link>
-  </div>
-</template>
-
-<script>
-export default {
-  
-}
-</script>
-```
