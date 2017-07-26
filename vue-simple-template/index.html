@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id='categoriesApp'>
+    Mostrar Categorias en Tabla 
+    <input type="checkbox" @click="changeShowTable">
+    <component :is='currentView'
+      :categories='categories'
+      @selectcategory='onSelectCategory'></component>
+  </div>
+
+  <template id='categoriesTableTmpl'>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Selected</th>
+      </thead>
+      <tbody>
+        <tr
+          @click='selectCategory(category)'
+          v-for='category in categories'>
+          <td>{{ category.name | replaceWithLove}}</td>
+          <td>{{ category.selected }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+
+  <template id='categoriesUlTmpl'>
+    <ul>
+      <li 
+        v-for='category in categories'
+        @click='selectCategory(category)'>
+        <category-item 
+          :name='category.name'
+          :selected='category.selected'>
+        </category-item>
+      </li>
+    </ul>
+  </template>
+
+  <template id='categoryItemTmpl'>
+    <div>
+      {{ name }}
+      <b v-if='selected'>selected</b>
+    </div>
+  </template>
+
+  <script>
+    categoriesListMixin = {
+      props: ['categories'],
+      methods: {
+        selectCategory: function (category) {
+          this.$emit('selectcategory', category)
+        }
+      }
+    }
+
+    Vue.component('categoriesUL', {
+      template: '#categoriesUlTmpl',
+      mixins: [categoriesListMixin]
+    })
+
+    Vue.component('categoriesTable', {
+      template: '#categoriesTableTmpl',
+      mixins: [categoriesListMixin]
+    })
+
+    Vue.component('category-item', {
+      template: '#categoryItemTmpl',
+      props: ['name', 'selected']
+    })
+
+    Vue.filter('replaceWithLove', function (value) {
+      return '<3'
+    })
+
+    new Vue({
+      el: '#categoriesApp',
+      data: {
+        categories: [],
+        showTable: false
+      },
+      computed: {
+        currentView: function() {
+          return this.showTable ? 'categoriesTable' : 'categoriesUL'
+        }
+      },
+      methods: {
+        changeShowTable: function () {
+          this.showTable = !this.showTable
+        },
+        onSelectCategory: function (category) {
+          var idx = this.categories.findIndex(function (c) {
+            return c.name === category.name
+          })
+          
+          if ( idx >= 0) {
+            var categoryElement = this.categories[idx]
+            categoryElement.selected = !categoryElement.selected
+          }
+        }
+      },
+      mounted: function () {
+        var url = 'https://raw.githubusercontent.com/jesuslerma/vuejs101-guide/master/categories.json'
+        var that = this
+
+        axios.get(url).then(function (response) {
+          that.categories = response.data
+        })
+      }
+    })
+  </script>
+</body>
+</html>
