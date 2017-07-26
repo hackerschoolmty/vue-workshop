@@ -2,6 +2,8 @@
 
 Material del Workshop de Vue.js impartido por [Hacker School Monterrey](http://hackerschool.mx/vue "Taller Avanzado de Vue.js").
 
+![alt text](http://hackerschool.mx/assets/img/logo.png "Logo de Hacker School Monterrey")
+
 Autor: [Chuy Lerma](https://github.com/jesuslerma)
 
 Este repositorio contiene el material del workshop impartido los días 12 y 18 de junio del
