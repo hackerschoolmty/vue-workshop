@@ -10,7 +10,8 @@ Este repositorio contiene el material del workshop impartido los días 12 y 18 d
 2017. El proposito del workshop es dar una introducción al uso de Vue.js como framework progresivo. Hemos liberado su contenido con la finalidad de llegar a más desarrolladores y para que los asistentes del workshop puedan repasar el material.
 
 ## Enlaces al contenido del workshop:
-* [Presentación de apoyo de la sesión](https://docs.google.com/presentation/d/1UHQ7gE-nCOmhFIFi4JXPQm3qYgm-wita2xr0mvmx7_I/edit?usp=sharing)
+* [Presentación (anterior) de apoyo de la sesión](https://docs.google.com/presentation/d/1UHQ7gE-nCOmhFIFi4JXPQm3qYgm-wita2xr0mvmx7_I/edit?usp=sharing)
+* [Presentacion Tec](https://docs.google.com/presentation/d/1iD2tU0SXTMxnL-gbF1jbk-k3wS4r_LJ94NYIKXMOfG8/edit?usp=sharing)
 * [Script del profesor](script.md)
 * [Proyecto con template simple](/vue-simple-template)
 * [Proyecto con template webpack simple](/vue-webpack-simple-template)
